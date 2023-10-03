@@ -29,17 +29,24 @@ Asegúrate de que estos archivos estén ubicados en el directorio `Data/Datos_cs
 
 Hemos implementado una serie de endpoints que proporcionan información y funcionalidad útiles a los usuarios:
 
-- `/countreviews/{Fecha_inicio}/{Fecha_fin}`: Este endpoint cuenta la cantidad de usuarios únicos que realizaron reseñas en un período de tiempo específico y calcula el porcentaje de recomendación en función de las reseñas.
+- `/UsersRecommend/{Anio}`: Esta función toma un año como entrada y filtra las reseñas de usuarios que recomendaron el juego (recommend=True) y tienen sentimientos positivos o neutrales.
+Luego, cuenta la cantidad de reseñas para cada juego y filtra los juegos cuyos ID están presentes en el DataFrame "games".
+Obtiene los 3 juegos más recomendados y crea una lista de diccionarios que contiene el puesto y el nombre de cada juego.
+Devuelve esta lista como resultado.
 
-- `/sentiment_analysis/{Anio}`: Realiza un análisis de sentimiento en las reseñas para un año de lanzamiento específico y muestra la cantidad de reseñas por categoría de sentimiento.
+- `/UsersNotRecommend/{Anio}`: Similar a la función anterior, pero filtra las reseñas de usuarios que no recomendaron el juego (recommend=False) y tienen sentimientos negativos.
+Luego, cuenta la cantidad de reseñas negativas para cada juego y filtra los juegos cuyos ID están presentes en el DataFrame "games".
+Obtiene los 3 juegos menos recomendados y crea una lista de diccionarios que contiene el puesto y el nombre de cada juego.
+Devuelve esta lista como resultado.
 
-- `/developers_por_letra/{letra}`: Devuelve una lista de desarrolladores cuyos nombres comienzan con una letra específica.
+- `/sentiment_analysis/{Anio}`: Esta función toma un año como entrada y filtra las reseñas que coinciden con ese año.
+Luego, realiza un conteo de las categorías de sentimiento ("Negative", "Neutral" y "Positive") en las reseñas.
+Devuelve un diccionario con los recuentos de cada categoría de sentimiento en el formato {Negative: n, Neutral: n, Positive: n}.
 
-- `/developer_juegos_gratis/{Nombre}`: Proporciona información sobre juegos gratuitos lanzados por una empresa desarrolladora específica, incluyendo el porcentaje de juegos gratuitos en función de los años.
-
-- `/lista_user_id`: Devuelve una lista de valores únicos de identificadores de usuario.
-
-- `/similar_user/{user_id}`: Encuentra usuarios similares al usuario especificado y recomienda juegos que otros usuarios similares han disfrutado.
+- `/recomendacion_usuario/{id_de_usuario}`: Esta función toma el ID de un usuario como entrada y utiliza un modelo de recomendación previamente entrenado (usando la biblioteca Surprise) para encontrar usuarios similares al usuario de interés.
+Luego, filtra las reseñas de los usuarios similares y selecciona las reseñas de juegos que han sido recomendados (recommend=True) por esos usuarios.
+Obtiene una lista de juegos recomendados por usuarios similares y selecciona los primeros 5 juegos encontrados.
+Devuelve una lista de diccionarios que contienen el ID y el nombre de estos juegos encontrados.
 
 ## Configuración del Sistema de Recomendación
 
