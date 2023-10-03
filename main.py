@@ -7,20 +7,14 @@ import pandas as pd
 file_path = 'Data/Datos_csv/reviews_nlp.csv'
 file_path1 = 'Data/Datos_csv/games.csv'
 
-
-
 # Se leen los archivos CSV y crean los DataFrame
 reviews = pd.read_csv(file_path, parse_dates= ['posted'])
 games = pd.read_csv(file_path1, parse_dates= ['release_date'])
 
 
-
-
-
 """
 Se crean las funciones para los endpoints
 """
-
 
 def UsersRecommend1(año: int):
     # Filtrar reseñas por año, recomendación y comentarios positivos/neutrales
@@ -38,7 +32,7 @@ def UsersRecommend1(año: int):
     top_3_games = filtered_game_counts.head(3)
 
     # Crear una lista de diccionarios con los juegos y sus puestos
-    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
+    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name'])}
               for i, item_id in enumerate(top_3_games)]
     
     return result
@@ -60,7 +54,7 @@ def UsersNotRecommend1(año: int):
     top_3_games = filtered_game_counts.head(3)
 
     # Crear una lista de diccionarios con los juegos y sus puestos
-    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
+    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name'])}
               for i, item_id in enumerate(top_3_games)]
     
     return result
@@ -87,7 +81,7 @@ def sentiment_analysis1(Año : int):
 
 
 """
-Definimos y entrenamos el sistema de recomendacion
+Se carga el modelo de recomendacion previamente entrenado.
 """
 
 import joblib
@@ -96,7 +90,10 @@ import joblib
 algo = joblib.load('modelo_surprise.pkl')
 
 
-# Supongamos que tenemos un usuario de interés con user_id = 'tu_usuario'
+"""
+Se crean la funcion para consumir el modelo de recomendacion.
+"""
+
 def recomendacion_usuario1(id_de_usuario: str):
 
     # Encuentra los usuarios más similares al usuario de interés
@@ -134,6 +131,10 @@ def recomendacion_usuario1(id_de_usuario: str):
     juegos_encontrados = juegos_encontrados_df[['item_id', 'app_name']].to_dict(orient='records')
     return juegos_encontrados
 
+
+"""
+Se crea la API y los endpoints
+"""
 
 from fastapi import FastAPI
 from pydantic import BaseModel
