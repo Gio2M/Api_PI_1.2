@@ -60,24 +60,19 @@ def UsersNotRecommend1(año: int):
     return result
 
 
-def sentiment_analysis1(Año : int):
-    # Convierte la cadena de fecha de entrada a un objeto datetime
-    target_date = pd.to_datetime(Año)
-    
+def sentiment_analysis1(Año: int):
     # Filtra las reseñas que coincidan con el año objetivo
-    filtered_reviews = reviews[reviews['posted'].dt.year == target_date.year]
-    
+    filtered_reviews = reviews[reviews['posted'].dt.year == Año]
+
     # Realiza el conteo de las categorías de sentimiento
     sentiment_counts = filtered_reviews['sentiment_analysis'].value_counts()
-    
-    # Crea una lista con los recuentos de categorías
-    result_list = f'Negative = {sentiment_counts.get(0, 0)}, Neutral = {sentiment_counts.get(1, 0)}, Positive = {sentiment_counts.get(2, 0)}'
-    
-     # Crear un diccionario con los resultados
-    results1 = {
-        f"Para el año de lanazamiento {Año} se registraron las siguientes reseñas por categoria: {result_list}" 
-    }    
-    return results1
+
+    # Crea un diccionario con los recuentos de categorías
+    result_dict = {'Negative': sentiment_counts.get(0, 0),
+                   'Neutral': sentiment_counts.get(1, 0),
+                   'Positive': sentiment_counts.get(2, 0)}
+
+    return result_dict
 
 
 """
