@@ -40,10 +40,53 @@ def countreviews(start_date, end_date):
     return results
 
 
+def UsersRecommend1(año: int):
+    # Filtrar reseñas por año, recomendación y comentarios positivos/neutrales
+    filtered_reviews = reviews[(reviews['posted'].dt.year == año) &
+                                  (reviews['recommend'] == True) &
+                                  (reviews['sentiment_analysis'].isin([1, 2]))]
+    
+    # Contar la cantidad de reseñas para cada juego
+    game_counts = filtered_reviews['item_id'].value_counts()
+    
+    # Filtrar los item_id que están en el DataFrame games
+    filtered_game_counts = game_counts[game_counts.index.isin(games['item_id'])]
 
-def sentiment_analysis(date_str):
+    # Obtener los top 3 juegos menos recomendados
+    top_3_games = filtered_game_counts.head(3)
+
+    # Crear una lista de diccionarios con los juegos y sus puestos
+    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
+              for i, item_id in enumerate(top_3_games.index)]
+    
+    return result
+
+
+def UsersNotRecommend1(año: int):
+    # Filtrar reseñas por año, no recomendación y sentimiento negativo
+    filtered_reviews = reviews[(reviews['posted'].dt.year == año) &
+                                  (reviews['recommend'] == False) &
+                                  (reviews['sentiment_analysis'] == 0)]
+    
+    # Contar la cantidad de reseñas negativas para cada juego
+    game_counts = filtered_reviews['item_id'].value_counts()
+       
+    # Filtrar los item_id que están en el DataFrame games
+    filtered_game_counts = game_counts[game_counts.index.isin(games['item_id'])]
+
+    # Obtener los top 3 juegos menos recomendados
+    top_3_games = filtered_game_counts.head(3)
+
+    # Crear una lista de diccionarios con los juegos y sus puestos
+    result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
+              for i, item_id in enumerate(top_3_games.index)]
+    
+    return result
+
+
+def sentiment_analysis1(Año : int):
     # Convierte la cadena de fecha de entrada a un objeto datetime
-    target_date = pd.to_datetime(date_str)
+    target_date = pd.to_datetime(Año)
     
     # Filtra las reseñas que coincidan con el año objetivo
     filtered_reviews = reviews[reviews['posted'].dt.year == target_date.year]
@@ -56,7 +99,7 @@ def sentiment_analysis(date_str):
     
      # Crear un diccionario con los resultados
     results1 = {
-        f"Para el año de lanazamiento {date_str} se registraron las siguientes reseñas por categoria: {result_list}" 
+        f"Para el año de lanazamiento {Año} se registraron las siguientes reseñas por categoria: {result_list}" 
     }    
     return results1
 
@@ -139,7 +182,7 @@ algo = joblib.load('modelo_surprise.pkl')
 # algo.fit(trainset)
 
 # Supongamos que tenemos un usuario de interés con user_id = 'tu_usuario'
-def recomendacion_usuario(id_de_usuario: str):
+def recomendacion_usuario1(id_de_usuario: str):
 
     # Encuentra los usuarios más similares al usuario de interés
     similar_users = algo.get_neighbors(algo.trainset.to_inner_uid(id_de_usuario), k=10)
@@ -189,9 +232,17 @@ app = FastAPI()
 def conteo_reviews(Fecha_inicio,Fecha_fin: str):
     return countreviews(Fecha_inicio,Fecha_fin)
 
+@app.get("/UsersRecommend/{Anio}")
+def UsersRecommend(Año: int):
+    return UsersRecommend1(Año)
+
+@app.get("/UsersNotRecommend/{Anio}")
+def UsersNotRecommend(Año: int):
+    return UsersNotRecommend1(Año)
+
 @app.get("/sentiment_analysis/{Anio}")
-def Analisis_sentimiento(Año: str):
-    return sentiment_analysis(Año)
+def sentiment_analysis(Año: int):
+    return sentiment_analysis1(Año)
 
 @app.get("/developers_por_letra/{letra}")
 def Letra_inicial(Inicial: str):
@@ -208,5 +259,5 @@ def lista_users():
 #def recomendacion_usuario( id de usuario )
 
 @app.get("/recomendacion_usuario/{id_de_usuario}")
-def recomendacion_usuario1(id_de_usuario: str):
-    return recomendacion_usuario(id_de_usuario)
+def recomendacion_usuario(id_de_usuario: str):
+    return recomendacion_usuario1(id_de_usuario)
