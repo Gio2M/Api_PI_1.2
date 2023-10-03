@@ -98,12 +98,12 @@ def developer_juegos_gratis(empresa_desarrolladora: str):
 
 
 
-def user_id():
-    # Suponiendo que 'reviews' es tu DataFrame
-    valores_unicos_user_id = df_train_filtrado['user_id'].unique().tolist()
+# def user_id():
+#     # Suponiendo que 'reviews' es tu DataFrame
+#     valores_unicos_user_id = df_train_filtrado['user_id'].unique().tolist()
 
-    # Imprime la lista de valores únicos de 'user_id'
-    return valores_unicos_user_id
+#     # Imprime la lista de valores únicos de 'user_id'
+#     return valores_unicos_user_id
 
 
 """
@@ -139,10 +139,10 @@ algo = joblib.load('modelo_surprise.pkl')
 # algo.fit(trainset)
 
 # Supongamos que tenemos un usuario de interés con user_id = 'tu_usuario'
-def similar_user(tu_usuario: str):
+def recomendacion_usuario(id_de_usuario: str):
 
     # Encuentra los usuarios más similares al usuario de interés
-    similar_users = algo.get_neighbors(algo.trainset.to_inner_uid(tu_usuario), k=10)
+    similar_users = algo.get_neighbors(algo.trainset.to_inner_uid(id_de_usuario), k=10)
 
     # Filtra las reseñas de los usuarios similares
     reviews_similares = reviews[reviews['user_id'].isin([algo.trainset.to_raw_uid(uid) for uid in similar_users])]
@@ -207,6 +207,6 @@ def lista_users():
 
 #def recomendacion_usuario( id de usuario )
 
-@app.get("/similar_user/{user_id}")
-def usuario_similar(user_id: str):
-    return similar_user(user_id)
+@app.get("/recomendacion_usuario/{id_de_usuario}")
+def recomendacion_usuario(id_de_usuario: str):
+    return recomendacion_usuario(id_de_usuario)
