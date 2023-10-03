@@ -208,5 +208,5 @@ def lista_users():
 #def recomendacion_usuario( id de usuario )
 
 @app.get("/recomendacion_usuario/{id_de_usuario}")
-def recomendacion_usuario(id_de_usuario: str):
+def recomendacion_usuario1(id_de_usuario: str):
     return recomendacion_usuario(id_de_usuario)
