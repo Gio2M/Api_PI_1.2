@@ -46,7 +46,7 @@ Devuelve un diccionario con los recuentos de cada categoría de sentimiento en e
 - `/recomendacion_usuario/{id_de_usuario}`: Esta función toma el ID de un usuario como entrada y utiliza un modelo de recomendación previamente entrenado (usando la biblioteca Surprise) para encontrar usuarios similares al usuario de interés.
 Luego, filtra las reseñas de los usuarios similares y selecciona las reseñas de juegos que han sido recomendados (recommend=True) por esos usuarios.
 Obtiene una lista de juegos recomendados por usuarios similares y selecciona los primeros 5 juegos encontrados.
-Devuelve una lista de diccionarios que contienen el ID y el nombre de estos juegos encontrados.
+Devuelve una lista que contienen el ID y el nombre de estos juegos encontrados.
 
 ## Configuración del Sistema de Recomendación
 
