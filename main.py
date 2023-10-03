@@ -57,7 +57,7 @@ def UsersRecommend1(año: int):
 
     # Crear una lista de diccionarios con los juegos y sus puestos
     result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
-              for i, item_id in enumerate(top_3_games.index)]
+              for i, item_id in enumerate(top_3_games)]
     
     return result
 
@@ -79,7 +79,7 @@ def UsersNotRecommend1(año: int):
 
     # Crear una lista de diccionarios con los juegos y sus puestos
     result = [{"Puesto {}: {}".format(i+1, games.loc[item_id]['app_name']) : item_id}
-              for i, item_id in enumerate(top_3_games.index)]
+              for i, item_id in enumerate(top_3_games)]
     
     return result
 
