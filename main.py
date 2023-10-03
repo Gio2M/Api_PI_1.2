@@ -67,10 +67,10 @@ def sentiment_analysis1(Año: int):
     # Realiza el conteo de las categorías de sentimiento
     sentiment_counts = filtered_reviews['sentiment_analysis'].value_counts()
 
-    # Crea un diccionario con los recuentos de categorías
-    result_dict = {'Negative': sentiment_counts.get(0, 0),
-                   'Neutral': sentiment_counts.get(1, 0),
-                   'Positive': sentiment_counts.get(2, 0)}
+    # Convierte los valores del diccionario a tipos nativos de Python
+    result_dict = {'Negative': int(sentiment_counts.get(0, 0)),
+                   'Neutral': int(sentiment_counts.get(1, 0)),
+                   'Positive': int(sentiment_counts.get(2, 0))}
 
     return result_dict
 
