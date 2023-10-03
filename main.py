@@ -205,7 +205,7 @@ def Juegos_gratis_developer(Nombre_Devpr: str):
 def lista_users():
     return user_id()
 
-def recomendacion_usuario( id de usuario )
+#def recomendacion_usuario( id de usuario )
 
 @app.get("/similar_user/{user_id}")
 def usuario_similar(user_id: str):
